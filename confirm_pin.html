@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <div class="card p-4 text-center">
+      <h4 class="mb-2"><i class="bi bi-key-fill me-2"></i>Confirm with PIN</h4>
+      <p class="mb-3">
+        Action: <strong>{{ action|capitalize }}</strong> · Amount: <strong>₹{{ "%.2f"|format(amount) }}</strong>
+      </p>
+
+      <form method="POST" action="{{ url_for('process_action') }}" novalidate>
+        <input type="hidden" name="action" value="{{ action }}">
+        <input type="hidden" name="amount" value="{{ amount }}">
+
+        {% if action == "send" %}
+        <div class="mb-3 text-start">
+          <label for="recipient" class="form-label">Select Recipient</label>
+          <select name="recipient" id="recipient" class="form-select" required>
+            <option value="" disabled selected>-- Choose Recipient --</option>
+            {% for r in recipients %}
+              <option value="{{ r.username }}">{{ r.username }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        {% endif %}
+
+        <div class="mb-3">
+          <input type="password" name="pin" maxlength="4" inputmode="numeric" pattern="\d{4}"
+                 class="form-control text-center" placeholder="Enter 4-digit PIN" required />
+          <div class="form-text">For your security, confirm your 4-digit PIN.</div>
+        </div>
+        <button class="btn btn-dark w-100" type="submit">Confirm</button>
+      </form>
+
+      <div class="small text-muted mt-3">You’ll be redirected back to your dashboard.</div>
+    </div>
+  </div>
+</div>
+{% endblock %}

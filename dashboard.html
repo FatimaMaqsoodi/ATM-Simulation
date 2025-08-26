@@ -1,0 +1,93 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="row g-4">
+  <!-- Left: Balance + History -->
+  <div class="col-lg-7">
+    <div class="card p-4 mb-4">
+      <div class="d-flex align-items-center justify-content-between">
+        <h4 class="mb-0">
+          <i class="bi bi-cash-coin me-2"></i> Balance
+        </h4>
+        <span class="badge text-bg-light fs-5 px-3 py-2">₹{{ "%.2f"|format(user.balance) }}</span>
+      </div>
+      <div class="text-muted mt-2">Account limit: ₹50,000</div>
+    </div>
+
+    <div class="card p-4">
+      <h5 class="mb-3"><i class="bi bi-clock-history me-2"></i>Transaction History</h5>
+      <ul class="list-group history-list">
+        {% if transactions and transactions|length > 0 %}
+          {% for t in transactions %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <strong>{{ t.type }}</strong>
+                {% if t.details %}<span class="text-muted"> · {{ t.details }}</span>{% endif %}
+                <div class="small text-muted">{{ t.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</div>
+              </div>
+              <span class="fw-semibold">₹{{ "%.2f"|format(t.amount) }}</span>
+            </li>
+          {% endfor %}
+        {% else %}
+          <li class="list-group-item">No transactions yet.</li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Right: Actions -->
+  <div class="col-lg-5">
+    <!-- Deposit -->
+    <div class="card p-4 mb-4">
+      <h5 class="mb-3"><i class="bi bi-wallet2 me-2"></i>Deposit</h5>
+      <form method="POST" action="{{ url_for('confirm_action') }}" class="row g-2" novalidate>
+        <input type="hidden" name="action" value="deposit" />
+        <div class="col-12">
+          <input type="number" name="amount" min="1" class="form-control" placeholder="Enter amount" required />
+          <div class="form-text">Your balance cannot exceed ₹50,000.</div>
+        </div>
+        <div class="col-12">
+          <button class="btn btn-success w-100" type="submit">
+            <i class="bi bi-arrow-down-circle me-1"></i> Deposit
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Withdraw -->
+    <div class="card p-4 mb-4">
+      <h5 class="mb-3"><i class="bi bi-cash me-2"></i>Withdraw</h5>
+      <form method="POST" action="{{ url_for('confirm_action') }}" class="row g-2" novalidate>
+        <input type="hidden" name="action" value="withdraw" />
+        <div class="col-12">
+          <input type="number" name="amount" min="1" class="form-control" placeholder="Enter amount" required />
+        </div>
+        <div class="col-12">
+          <button class="btn btn-warning w-100" type="submit">
+            <i class="bi bi-arrow-up-circle me-1"></i> Withdraw
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Send -->
+    <div class="card p-4">
+      <h5 class="mb-3"><i class="bi bi-send-check me-2"></i>Send Money</h5>
+      <form method="POST" action="{{ url_for('confirm_action') }}" class="row g-2" novalidate>
+        <input type="hidden" name="action" value="send" />
+        <div class="col-12">
+          <input type="text" name="recipient" class="form-control" placeholder="Recipient username" required />
+        </div>
+        <div class="col-12">
+          <input type="number" name="amount" min="1" class="form-control" placeholder="Enter amount" required />
+        </div>
+        <div class="col-12">
+          <button class="btn btn-atm w-100" type="submit">
+            <i class="bi bi-send me-1"></i> Send
+          </button>
+        </div>
+      </form>
+      <div class="small text-muted mt-2">Recipient’s balance also cannot exceed ₹50,000.</div>
+    </div>
+  </div>
+</div>
+{% endblock %}

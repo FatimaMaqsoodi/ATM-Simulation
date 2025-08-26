@@ -1,0 +1,52 @@
+/* Background color for the whole website */
+body.bg-lavender {
+  background-color: lavender;
+  min-height: 100vh;
+}
+
+/* Navbar purple shade */
+.bg-purple {
+  background-color: #6a0dad !important; /* rich purple */
+}
+
+/* Sticky navbar */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1020; /* ensures it stays above other content */
+}
+
+/* Custom card design */
+.card {
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background: white;
+}
+
+/* Buttons */
+.btn {
+  border-radius: 8px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Accent text */
+.text-purple {
+  color: #6a0dad;
+  font-weight: 600;
+}
+
+/* Balance box */
+.balance-box {
+  background: #f8f9fa;
+  border: 2px solid #6a0dad;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #6a0dad;
+}
